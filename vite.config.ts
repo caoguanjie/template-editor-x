@@ -133,8 +133,6 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       })(),
     },
     build: {
-
-      outDir: fileURLToPath(new URL(`${loadENV[mode]?.system.dir || `./${moduleName ?? 'FitsAdmin'}`}`, import.meta.url)),
       minify: 'terser',
       rollupOptions: {
         treeshake: false,//关闭摇树优化，devExpress组件需要，否则工具栏异常
