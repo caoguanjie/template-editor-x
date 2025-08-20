@@ -37,7 +37,7 @@
 
 **Template Editor X 目前只是一个基本模型和模板的底座，未来要结合业务做更多的拓展和优化。** 🌟
 
-[!图片](https://caoguanjie.github.io/template-editor-x/demo.png)
+![图片](https://github.com/caoguanjie/template-editor-x/blob/main/demo.png)
 
 ## 安装
 ```sh
