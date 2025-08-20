@@ -7,9 +7,7 @@
         <img src="https://img.shields.io/github/stars/caoguanjie/fitsadmin.svg?style=social&label=Stars"/>
     </a>
     <br/>
-    <a href="https://github.com/caoguanjie" target="_blank">
-        <img src="https://img.shields.io/badge/Author-丰德前端框架组-orange.svg"/>
-    </a>
+  
 </p>
 
 
