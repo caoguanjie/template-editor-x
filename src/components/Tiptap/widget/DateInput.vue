@@ -23,11 +23,11 @@
  * @Author: caoguanjie 
  * @Date: 2025-07-30 16:06:10 
  * @Last Modified by: caoguanjie
- * @Last Modified time: 2025-08-01 10:45:19
+ * @Last Modified time: 2025-08-20 11:12:06
  */
 import DatePicker from 'vue-datepicker-next';
 import 'vue-datepicker-next/index.css';
-import 'vue-datepicker-next/locale/zh-cn';
+import 'vue-datepicker-next/locale/zh-cn.es';
 import { NodeViewRendererProps, NodeViewContent } from '@tiptap/vue-3'
 const props = defineProps({
     focus: {
