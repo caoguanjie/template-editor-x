@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="/images/logo.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="广东丰德科技有限公司" />
+  <!-- 不缓存index.html页面内容 -->
+  <meta http-equiv="Cache-Control" content="no-cache">
+  <!-- 兼容其他http协议 -->
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>Document</title>
+  <style>
+    html,
+    body {
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+        margin: 0px;
+        padding: 0px;
+    }
+
+    #ieIframe {
+        width: 100%;
+        height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <iframe src="" frameborder="0" id="ieIframe"></iframe>
+</body>
+
+<script>
+// 3. readyState 检查
+// 所有IE版本都支持
+function ready(fn) {
+    if (document.readyState === 'complete' || 
+        (document.readyState !== 'loading' && !document.documentElement.doScroll)) {
+        fn();
+    } else {
+        // IE9+
+        if (document.addEventListener) {
+            document.addEventListener('DOMContentLoaded', fn);
+        } else {
+            // IE8及以下
+            document.attachEvent('onreadystatechange', function() {
+                if (document.readyState === 'complete') {
+                    fn();
+                }
+            });
+        }
+    }
+}
+
+
+// 方式2：更完整的兼容性处理
+function setIframeSrc(iframeUrl) {
+    // 支持多种获取元素的方式
+    var iframe = document.getElementById('ieIframe') || 
+                document.getElementsByName('ieIframe')[0] ||
+                document.querySelector('#ieIframe');
+                
+    if (iframe) {
+        try {
+            // 先尝试使用 setAttribute
+            iframe.setAttribute('src', iframeUrl);
+        } catch (e) {
+            try {
+                // 如果 setAttribute 失败，直接设置 src 属性
+                iframe.src = iframeUrl;
+            } catch (err) {
+                console.error('设置iframe src失败:', err);
+            }
+        }
+    } else {
+        console.warn('未找到指定的iframe元素');
+    }
+}
+
+
+// 使用方式
+ready(function() {
+    // 代码
+    var searchContent = decodeURI(window.location.search)
+    var iframeUrl = searchContent.split('resUrl=')[1].split('dzblPatientName=')[0]
+    var windowTitle = searchContent.split("dzblPatientName=")[1] + "的电子病历"
+    setIframeSrc(iframeUrl);
+    document.title = windowTitle
+});
+
+
+</script>
+
+</html>

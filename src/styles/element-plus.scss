@@ -1,0 +1,120 @@
+:root {
+    // 这里可以设置你自定义的颜色变量
+    // 这个是element主要按钮:active的颜色，当主题更改后此变量的值也随之更改
+    --el-color-primary-dark: #0d84ff;
+    // element plus 2.1.0 禁用文本色值和正常文本色值无法区分问题
+    --el-text-color-disabled: #ccc;
+    // 按钮背景和单选框的文字颜色
+    --el-color-primary: var(--btn-bg-color);
+    --el-text-color-regular: var(--default-color);
+    --el-radio-text-color: var(--default-color);
+    // 缺省页字体颜色
+    --el-text-color-secondary: #999ba1;
+    // 按钮默认加粗
+    --el-font-weight-primary: 400;
+    label {
+        font-weight: 400;
+    }
+    // 抽屉公共样式
+    .el-drawer {
+        margin-bottom: 0px;
+        .el-drawer__header {
+            padding: 20px 15px 20px 25px;
+            margin-bottom: 0px;
+            border-bottom: 1px solid #f2f2f2;
+        }
+        .el-drawer__body {
+            padding: 0px;
+        }
+    }
+}
+
+// 覆盖 element-plus 的样式
+.el-breadcrumb__inner,
+.el-breadcrumb__inner a {
+    font-weight: 400 !important;
+}
+
+.el-upload {
+    input[type="file"] {
+        display: none !important;
+    }
+}
+
+.el-upload__input {
+    display: none;
+}
+
+// dropdown
+.el-dropdown-menu {
+    a {
+        display: block;
+    }
+}
+
+// to fix el-date-picker css style
+.el-range-separator {
+    box-sizing: content-box;
+}
+
+// 选中行背景色值
+.el-table__body tr.current-row td {
+    background-color: #edf1fd !important;
+}
+
+// card 的header统一高度
+.el-card__header {
+    height: 60px !important;
+}
+
+// 表格表头和表体未对齐
+.el-table__header col[name="gutter"] {
+    display: table-cell !important;
+}
+
+.el-dialog {
+    padding: 0px;
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+}
+
+.el-radio__input.is-checked .el-radio__inner {
+    background-color: var(--el-color-white);
+    &::after {
+        background-color: var(--el-color-primary);
+        height: 8px;
+        width: 8px;
+    }
+}
+
+.el-radio__input.is-checked+.el-radio__label {
+    color: var(--default-color);
+}
+
+.el-radio.is-bordered .el-radio__input.is-checked+.el-radio__label {
+    color: var(--el-color-primary);
+}
+
+.el-pagination {
+    --el-text-color-placeholder: #a7a8ab;
+    --el-disabled-bg-color: #f2f4f8;
+    --el-pagination-button-bg-color: #ebeff4;
+    --el-pagination-button-color: #606266;
+}
+
+// 统一的按钮样色
+.el-button {
+    // 将主色##4F7AF1降透明度为0.8
+    &.el-button--primary {
+        --el-button-hover-bg-color: rgba(79, 122, 241, 0.8);
+        --el-button-hover-border-color: rgba(79, 122, 241, 0.8);
+        --el-button-active-bg-color: rgba(79, 122, 241, 0.9);
+    }
+}
+
+.el-tabs__nav {
+    // z-index: 0 !important;
+}

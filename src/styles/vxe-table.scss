@@ -1,0 +1,73 @@
+:root {
+    --vxe-ui-font-primary-color: var(--fits-base-main-color);
+    --vxe-ui-font-primary-darken-color: var( --fits-base-main-color-hover);
+    --vxe-ui-font-primary-lighten-color: var( --fits-base-main-color-hover);
+    --vxe-ui-font-primary-disabled-color: var(--fits-base-main-color-disabled);
+    // vxe-table 样式
+    // --vxe-ui-header-font-color: var(--default-color);
+    // --vxe-ui-footer-font-color: var(--default-color);
+    // --vxe-ui-font-primary-color: var(--default-color);
+    // --vxe-ui-header-font-weight: 400;
+    // --vxe-ui-header-background-color: #f0f1f4;
+}
+
+.vxe-button,
+button,
+.el-button {
+    font-family: var(--el-font-family)
+}
+
+.vxe-table--tooltip-wrapper.theme--dark {
+    // 弹窗的遮罩不显示
+    z-index: 9999 !important;
+}
+
+.fits-vxetable-pagination {
+    // 下面是页脚的样式
+    &.vxe-pager {
+        color: var(--fits-text-color, #333);
+        font-size: 12px;
+        height: 50px;
+        .vxe-input--inner {
+            border-radius: 2px;
+            color: var(--fits-text-color, #333);
+            font-size: 12px;
+        }
+        .vxe-pager--jump-next.is--disabled,
+        .vxe-pager--jump-prev.is--disabled,
+        .vxe-pager--next-btn.is--disabled,
+        .vxe-pager--num-btn.is--disabled,
+        .vxe-pager--prev-btn.is--disabled {
+            color: #cccccc;
+            font-size: 10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 2px;
+        }
+        .vxe-pager--jump-next,
+        .vxe-pager--jump-prev,
+        .vxe-pager--prev-btn,
+        .vxe-pager--next-btn,
+        .vxe-pager--num-btn,
+        .vxe-pager--prev-btn .vxe-pager--goto {
+            width: 30px;
+            height: 30px;
+            border-radius: 2px;
+            font-size: 10px;
+        }
+    }
+    &.vxe-pager .vxe-pager--jump .vxe-pager--goto {
+        border-radius: 2px;
+        min-width: 50px;
+        font-size: 10px;
+        line-height: 30px;
+        height: 30px;
+    }
+    &.vxe-pager .vxe-pager--jump-next:not(.is--disabled):focus,
+    &.vxe-pager .vxe-pager--jump-prev:not(.is--disabled):focus,
+    &.vxe-pager .vxe-pager--next-btn:not(.is--disabled):focus,
+    &.vxe-pager .vxe-pager--num-btn:not(.is--disabled):focus,
+    &.vxe-pager .vxe-pager--prev-btn:not(.is--disabled):focus {
+        box-shadow: none;
+    }
+}

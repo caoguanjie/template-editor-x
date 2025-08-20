@@ -1,0 +1,74 @@
+.assetContainer {
+    font-size: 14px;
+    margin: 16px 12px 0 12px;
+    background: #ffffff;
+    height: var(--viewHieght);
+    overflow: hidden;
+    .leftTree {
+        min-width: 240px;
+        float: left;
+        height: 100%;
+    }
+    .assetManage {
+        display: flex;
+        height: 100%;
+        border-left: 1px solid #dcdfe6;
+        .tableContain {
+            width: 100%;
+            padding: 0 20px;
+        }
+
+        // 当前环节-审批人的样式
+        span.stepUser {
+            text-decoration: none;
+            cursor: unset;
+            margin-right: 0;
+        }
+
+        // 跳转的单号
+        .codeStyle {
+            color: #337ab7;
+            cursor: pointer;
+        }
+
+        :deep(.Department-baseDialog) {
+            .el-dialog__header {
+                display: none;
+            }
+
+            .el-dialog__body {
+                padding-top: 30px;
+                padding-bottom: 20px;
+            }
+        }
+
+        :deep(.onfooter) {
+            .el-dialog__body {
+                .dialog-body {
+                    .el-scrollbar {
+                        .el-scrollbar__wrap {
+                            .el-scrollbar__view {
+                                padding: 0px !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    :deep(.el-drawer__body) {
+        background-color: #ffffff;
+    }
+}
+.operationBtn {
+    width: 24px;
+    height: 16px;
+    font-size: 12px;
+    font-family: MicrosoftYaHei, sans-serif;
+    color: #0e84ff;
+    line-height: 16px;
+    cursor: pointer;
+    margin: 0 5px;
+    text-decoration: underline;
+}

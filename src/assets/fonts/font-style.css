@@ -1,0 +1,25 @@
+/* @font-face {
+    font-family: "Rany";
+    src: url('Rany.woff2?t=1717669894335') format('woff2'), url('Rany.woff?t=1717669894335') format('woff'), url('Rany.ttf?t=1717669894335') format('truetype');
+} */
+
+@font-face {
+    font-family: "FitsSemiboldHeiTi";
+    font-style: normal;
+    font-weight: 400;
+    src: local('Microsoft YaHei');
+}
+
+@font-face {
+    font-display: swap;
+    font-family: "FitsSemiboldHeiTi";
+    font-weight: 700;
+    /* Project id 4546876 */
+    src: url('FitsSemiboldHeiTi.ttf?t=1717669894335') format('truetype');
+}
+
+@font-face {
+    font-family: "DINBold";
+    font-style: normal;
+    src: url('D-DIN-PRO-700-Bold.ttf?t=1717669894335') format('truetype');
+}

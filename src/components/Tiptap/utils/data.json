@@ -1,0 +1,90 @@
+{
+    "data": {
+        "id": "3800919245919207425",
+        "chainId": "ffffffff0000000034bf93ea66700000",
+        "clinicId": "ffffffff0000000034bf93ea66700002",
+        "name": "静脉输液知情同意书",
+        "sharedPageId": null,
+        "catalogueId": null,
+        "sourceId": 3795818652336111600,
+        "medicalTypeId": "3800919245382336512",
+        "businessType": 1,
+        "emrTemplateViews": [],
+        "content": {
+            "templateContent": {
+                "type": "doc",
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "attrs": {
+                            "indent": "",
+                            "lineHeight": "",
+                            "textAlign": null
+                        }
+                    },
+                    {
+                        "type": "widgetField",
+                        "attrs": {
+                            "placeholder": "",
+                            "count": 0
+                        }
+                    },
+                    {
+                        "type": "paragraph",
+                        "attrs": {
+                            "indent": "",
+                            "lineHeight": "",
+                            "textAlign": null
+                        },
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "I'm running Tiptap with Vue.js. 🎉"
+                            }
+                        ]
+                    },
+                    {
+                        "type": "widgetField",
+                        "attrs": {
+                            "placeholder": "你好",
+                            "count": 0
+                        }
+                    },
+                    {
+                        "type": "paragraph",
+                        "attrs": {
+                            "indent": 0,
+                            "lineHeight": 0,
+                            "textAlign": null
+                        }
+                    }
+                ]
+            },
+            "templateSetting": {
+                "pageSize": "A4",
+                "pageSizeReduce": {
+                    "top": 15,
+                    "left": 15,
+                    "right": 15,
+                    "bottom": 15
+                },
+                "pageOrientation": 1
+            }
+        },
+        "defaultTemplateId": "3800919245919207480",
+        "permissions": [
+            {
+                "ownerId": "ffffffff0000000034bf93ea66700002",
+                "ownerType": 1,
+                "ownerName": null
+            }
+        ],
+        "tag": 0,
+        "type": 0,
+        "isReadOnly": 0,
+        "isAddOnce": 0,
+        "namePy": "JMSYZQTYS",
+        "namePyFirst": "jingmaishuyezhiqingtongyishu",
+        "sort": null
+    }
+}

@@ -1,0 +1,46 @@
+.blue {
+    color: blue;
+    .el-input__wrapper,
+    .el-input__inner,
+    .el-textarea__inner {
+        -webkit-text-fill-color: blue !important;
+    }
+}
+
+.grey {
+    color: grey;
+    .el-input__wrapper,
+    .el-input__inner,
+    .el-textarea__inner {
+        -webkit-text-fill-color: grey !important;
+    }
+}
+
+.red {
+    color: red;
+    .el-input__wrapper,
+    .el-input__inner,
+    .el-textarea__inner {
+        -webkit-text-fill-color: red !important;
+    }
+}
+
+.green {
+    color: green;
+    .el-input__wrapper,
+    .el-input__inner,
+    .el-textarea__inner {
+        -webkit-text-fill-color: green !important;
+    }
+}
+
+.customButtonItem {
+    align-items: center;
+    justify-content: center;
+    height: 32px;
+    border-radius: 2px;
+    padding: 0 1em;
+    border: solid 1px #c0c4cc;
+    background-color: #007dff;
+    border-color: #007dff;
+}

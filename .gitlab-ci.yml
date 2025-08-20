@@ -1,0 +1,230 @@
+variables:
+  ENV:
+    "dev"
+    # 跳过清理 node_modules [[3]]
+  GIT_CLEAN_FLAGS: -fdx -e node_modules/
+  BASE_URL: "/RecoveryPilot/fitsadmin_rtms/"
+  #目标服务器的账号
+  SSH_ENV: ""
+  SSH_USER: "administrator"
+  SSH_IP: "192.168.32.51"
+  SSH_DIR: "/Gitlab/RTMS"
+
+# 定义了构建的作业流程及其执行顺序，先构建，再发布，
+stages: # List of stages for jobs, and their order of execution
+  - ready
+  - build
+  - deploy
+  - prepare
+  - release
+
+# 在流水线中.ready是一个隐藏的任务，在流水线中，以英文远点开头的任务名，都是隐藏的任务,不会被执行
+#被build_job继承后，相同的key会以build_job为准，build_job没有的，而.ready有的，则合并到build_job中，
+.ready:
+  stage: ready
+  before_script:
+    - echo "开始准备node环境......"
+    - export NODE_OPTIONS=--max_old_space_size=8192
+    - npm config set registry https://registry.npmmirror.com
+    - npm install -g pnpm
+    - pnpm config set registry https://registry.npmmirror.com
+    - pnpm install
+
+  # cache 用于定义作业（job）之间的缓存策略。缓存可以显著提高 CI/CD 流水线的执行效率
+  cache:
+    paths:
+      - node_modules
+
+pages:
+  stage: deploy
+  # 继承隐藏任务
+  extends: .ready
+  tags:
+    - frontend-nodejs
+  # 这里添加部署项目的命令
+  script:
+    - echo '开始构建项目，当前环境是：$ENV'
+    - npm run build:$ENV --path=$BASE_URL
+    - rm -rf public
+    - mv -f FitsAdmin public
+  artifacts:
+    paths:
+      - public
+  only:
+    - dev # 指定只有当推送到 dev开发 分支时才部署
+
+build:
+  stage: deploy
+  # 继承隐藏任务
+  extends: .ready
+  tags:
+    - frontend-nodejs
+  # 这里添加部署项目的命令
+  script:
+    - echo '开始构建项目，当前环境是：$ENV'
+    - npm run build:$ENV
+    - rm -rf public
+    - mv -f FitsAdmin public
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "release"'
+#     # 创建一个隐藏文件夹
+#     - mkdir .public
+#     # 遍历.vitepress/dist文件内容下所有内容，复制到隐藏目录里面
+#     - cp -r .vitepress/dist/* .public/
+#     # 强制删除.vitepress/dist
+#     - rm -rf .vitepress/dist
+#     - rm -rf public
+#     # 这个命令将 .public 目录重命名为 public
+#     - mv .public public
+
+FrontendService:
+  stage: build
+  # 继承隐藏任务
+  extends: .ready
+  tags:
+    - frontend-nodejs
+  # 这里添加部署项目的命令
+  script:
+    - echo '开始构建项目，当前环境是：$ENV'
+      # 当是发布分支时，将测试环境的配置文件替换为开发环境的配置文件
+    - 'if [ "$CI_COMMIT_BRANCH" == "release" ]; then npm run build:prod; fi'
+    - 'if [ "$CI_COMMIT_BRANCH" == "pre-release" ]; then npm run build:dev; fi'
+    # - npm run build:$ENV
+    - rm -rf public
+    # - mv -f FitsAdmin public
+    # 创建一个名为 publish 的目录，-p 选项告诉 mkdir 命令，如果必要的话，创建父目录
+    - mkdir -p publish/FrontendService
+    # 将 public 目录复制到 publish 目录中
+    - cp -r FitsAdmin/* publish/FrontendService
+  artifacts:
+    paths:
+      - publish/
+  # only:
+  #   - pre-release # 指定只有当推送到 dev开发 分支时才部署
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "pre-release" || $CI_COMMIT_BRANCH == "release"'
+      when: always
+    - when: never
+
+deploy:
+  stage: deploy
+  # 继承隐藏任务
+  # extends: .ready
+  # tags是runner的标签
+  tags:
+    - ubuntu
+  before_script:
+    - echo "导出所有环境变量"
+    # - export
+    - echo "当前服务器IP地址：$SSH_IP"
+    - echo "当前服务器的登录账号：$SSH_USER"
+    - echo "当前服务器的登录密码：$SSH_PWD"
+    - echo "当前服务器的默认端口：$SSH_PORT"
+    - echo "当前服务器的部署路径：$SSH_DIR"
+    - echo "当前环境变量：$SSH_ENV"
+    # 备份原有源列表
+    - "cp /etc/apt/sources.list /etc/apt/sources.list.bak"
+    #替换为阿里云镜像源
+    - echo "deb http://mirrors.aliyun.com/ubuntu/ focal main restricted universe multiverse" >> /etc/apt/sources.list
+    - echo "deb http://mirrors.aliyun.com/ubuntu/ focal-security main restricted universe multiverse" >> /etc/apt/sources.list
+    - echo "deb http://mirrors.aliyun.com/ubuntu/ focal-updates main restricted universe multiverse" >> /etc/apt/sources.list
+    - echo "deb http://mirrors.aliyun.com/ubuntu/ focal-proposed main restricted universe multiverse" >> /etc/apt/sources.list
+    - echo "deb http://mirrors.aliyun.com/ubuntu/ focal-backports main restricted universe multiverse" >> /etc/apt/sources.list
+    # 在 Ubuntu 容器中使用 SFTP/SCP 推送文件
+    - "apt-get update -y"
+    # 列出已安装的软件包,检查是否包含 sshpass, 如果失败，则安装 sshpass
+    - "dpkg -l | grep -qw sshpass || apt-get install sshpass -y"
+  script:
+    - echo "输出当前文件夹内容2"
+    - ls -l
+    - echo "进入部署项目，根据环境变量修改配置项"
+    - echo "开始传输部署文件到目标服务器"
+    - chmod 777 publish
+    - cd ./publish
+    # 检查工作目录
+    - pwd
+    - echo "输出当前文件夹内容2"
+    - ls -l
+    # 手动创建.ssh目录
+    - mkdir -p ~/.ssh
+    # 设置目录权限
+    - chmod 700 ~/.ssh
+    # 获取远程主机的 SSH 公钥并将其添加到本地 known_hosts 文件中，这个做法补充措施，可以提前链接ssh服务，不会导致出现错误
+    - ssh-keyscan -H 192.168.32.51 >> ~/.ssh/known_hosts
+    # 将不采用scp命令，改用sftp命令，因为scp命令在执行时，会出现无法推送到目标服务器的目录，影响自动化部署
+    - echo "开始上传SFTP服务器"
+    - echo 'sshpass -p $SSH_PWD sftp -o StrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-dss $SSH_USER@$SSH_IP '
+    # 将复杂的sftp命令（多行命令），yml的格式是要用「|」区别多行，不然会失败， 也不能把多行命令写在文件「sftp_commands.txt」内，不然会出现权限不足，无法正常推送代码
+    - |
+      sshpass -p $SSH_PWD sftp -v -o StrictHostKeyChecking=no -oHostKeyAlgorithms=+ssh-dss $SSH_USER@$SSH_IP <<EOF
+      put -r ./ $SSH_DIR
+      exit
+      EOF
+    - '[ $? -eq 0 ] && echo "SFTP server 文件上传上传，上传时间： $(date "+%Y-%m-%d %H:%M:%S"), 上传地址：$SSH_DIR"'
+  needs:
+    - job: FrontendService
+      artifacts: true
+  # only:
+  #   - pre-release
+  artifacts:
+    paths:
+      - publish/
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "pre-release" || $CI_COMMIT_BRANCH == "release"'
+      when: always
+    - when: never
+
+# 发布前的准备工作
+prepare_job:
+  stage: prepare
+  tags:
+    - ubuntu
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v?\d+\.\d+\.\d+$/'
+  script:
+    - echo '开始准备发布环境......'
+    - apt-get update && apt-get install -y curl jq
+    - echo '获取标签的更新说明文件......'
+    # - curl -H "PRIVATE-TOKEN: $CI_API_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG" | jq -r .notes > release_notes.md
+    - 'curl -H "PRIVATE-TOKEN: $CI_API_TOKEN" "$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG" | jq -r .notes > release_notes.md'
+    - echo '创建标签的更新说明文件......'
+    - 'curl -H "PRIVATE-TOKEN: $CI_API_TOKEN" -X POST "$CI_API_V4_URL/projects/$CI_PROJECT_ID/repository/changelog?version=$CI_COMMIT_TAG"'
+  artifacts:
+    paths:
+      - release_notes.md
+
+# 发布工作
+release_job:
+  stage: release
+  tags:
+    - release-tag
+  needs:
+    - job: prepare_job
+      artifacts: true
+  rules:
+    - if: '$CI_COMMIT_TAG =~ /^v?\d+\.\d+\.\d+$/'
+  script:
+    - echo '开始发布项目......'
+    - echo '发布项目到gitlab仓库......'
+    - echo '输出项目地址：$CI_PROJECT_URL'
+    - echo '输出当前流水线id号：$GE_JOB_ID'
+    - echo '导出所有变量'
+    - export
+  # artifacts:
+  artifacts:
+    paths:
+      - release_notes.md
+  release:
+    name: "Release $CI_COMMIT_TAG" # 发布的名称
+    description: "Release $CI_COMMIT_TAG" # 发布的描述
+    tag_name: "$CI_COMMIT_TAG" # 标签名称
+    ref: "$CI_COMMIT_TAG" # 发布的引用
+    assets:
+      links:
+        - name: "Changelog（发布日志）.md" # 发布的文件名称
+          url: "$CI_PROJECT_URL/-/jobs/${CI_JOB_ID}/artifacts/file/release_notes.md" # 发布的文件URL
+          # filepath: "release_notes.md" # 发布的文件路径
+    # release:

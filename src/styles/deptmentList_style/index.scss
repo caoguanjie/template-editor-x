@@ -1,0 +1,84 @@
+//用于类似部门管理，子级部门有信息板块的页面（右侧的样式）
+.departmentInfoList {
+    display: flex;
+    padding: 0px 0px 0 8px;
+    background-color: #ffffff;
+    flex-direction: column;
+
+    .departMentScroll {
+        background: white;
+        height: var(--viewHieght);
+    }
+
+    .titleInfo {
+        display: flex;
+        justify-content: space-between;
+        background-color: #f7f8fa;
+        height: 40px;
+        align-items: center;
+
+        .left {
+            margin-left: 10px;
+            align-items: center;
+            display: flex;
+
+            img {
+                width: 18px;
+                height: 20px;
+                vertical-align: middle;
+                margin-right: 4px;
+            }
+        }
+
+        .right {
+            .operation {
+                font-weight: 700;
+                color: #007dff;
+                margin: 0 16px;
+                font-size: 12px;
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        }
+    }
+
+    .departmentInfo {
+        background-color: #ffffff;
+        padding: 10px 10px 0 10px;
+
+        .departmentForm {
+            margin: 10px 10px 0 10px;
+        }
+    }
+
+    .departmentSon {
+        background-color: #ffffff;
+        padding: 0px 10px 0 10px;
+
+        .titleInfo {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            background-color: #f7f8fa;
+            height: 40px;
+            align-items: center;
+
+            div {
+                font-weight: bold;
+                color: #303133;
+                font-size: 14px;
+
+                img {
+                    width: 18px;
+                    height: 20px;
+                    vertical-align: middle;
+                    margin-right: 4px;
+                }
+            }
+        }
+
+        .title {
+            margin: 0px 10px 0 10px;
+        }
+    }
+}
