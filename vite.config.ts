@@ -13,9 +13,7 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import vueSetupExtend from 'vite-plugin-vue-setup-extend'
 import type { Plugin, ResolvedConfig } from 'vite'
 import removeConsole from 'vite-plugin-remove-console';
-import dev from './src/environment/dev'
-import prod from './src/environment/prod'
-import emebed from './src/environment/emebed'
+
 import px2rem from 'postcss-plugin-px2rem';
 
 
@@ -27,16 +25,13 @@ export default ({ mode }: ConfigEnv): UserConfig => {
   // 获取 .env 环境配置文件
   const env = loadEnv(mode, process.cwd());
   // 把所有的环境变量都放到全局变量ENV中,每次新建环境变量都需要静态导入到vite这里来，进行配置
-  const loadENV = { dev, prod, emebed }
+  // const loadENV = { dev, prod, emebed }
   const isDev = mode === 'dev'
-  loadENV[mode].modules = moduleName
+  // loadENV[mode].modules = moduleName
   // console.log(loadENV[mode], mode)
   return {
-    base: basePath || '/',
+    base: mode === 'github' ? '/template-editor-x/' : `/`,
     // 定义全局常量替换方式。其中每项在开发环境下会被定义在全局，而在构建时被静态替换。
-    define: {
-      ENV: JSON.stringify(loadENV[mode]),
-    },
     plugins: [
       // 自动导入elment-plus
       AutoImport({
@@ -78,22 +73,7 @@ export default ({ mode }: ConfigEnv): UserConfig => {
       }),
     ],
     css: {
-      postcss: {
-        plugins: (loadENV[mode]?.system?.px2rem ?? !isDev) ? [
-          px2rem({
-            rootValue: 192,//根元素字体大小。默认值为 100。
-            propList: ['*'],
-            unitPrecision: 5,//允许 REM 单位增长到的十进制数字propwhiteList: []，//可以从 px 更改为 rem 的属性
-            propBlackList: [],
-            exclude: ['/node modules/'],
-            selectorBlackList: ['noRem'], //（数组）要忽略并保留为 px 的选择器
-            ignoreIdentifier: false,
-            replace: true,//替换包含 rems 的规则，而不是添加回退
-            mediaQuery: false,//允许在媒体查询中转换 px
-            minPixelValue: 1 //设置要替换的最小像素值
-          })
-        ] : undefined
-      },
+
       // css预处理器
       preprocessorOptions: {
         scss: {
