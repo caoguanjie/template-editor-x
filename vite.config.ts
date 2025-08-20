@@ -13,7 +13,9 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import vueSetupExtend from 'vite-plugin-vue-setup-extend'
 import type { Plugin, ResolvedConfig } from 'vite'
 import removeConsole from 'vite-plugin-remove-console';
-
+import dev from './src/environment/dev'
+import prod from './src/environment/prod'
+import emebed from './src/environment/emebed'
 import px2rem from 'postcss-plugin-px2rem';
 
 
@@ -25,13 +27,15 @@ export default ({ mode }: ConfigEnv): UserConfig => {
   // 获取 .env 环境配置文件
   const env = loadEnv(mode, process.cwd());
   // 把所有的环境变量都放到全局变量ENV中,每次新建环境变量都需要静态导入到vite这里来，进行配置
-  // const loadENV = { dev, prod, emebed }
+  const loadENV = { dev, prod, emebed }
   const isDev = mode === 'dev'
-  // loadENV[mode].modules = moduleName
   // console.log(loadENV[mode], mode)
   return {
     base: mode === 'github' ? '/template-editor-x/' : `/`,
     // 定义全局常量替换方式。其中每项在开发环境下会被定义在全局，而在构建时被静态替换。
+    define: {
+      ENV: JSON.stringify(loadENV['dev']),
+    },
     plugins: [
       // 自动导入elment-plus
       AutoImport({
